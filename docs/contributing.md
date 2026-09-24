@@ -1,32 +1,32 @@
-# Đóng góp vào agent-kit-react
+# Contributing to agent-kit-react
 
-## Khi nào nên đề xuất thay đổi
+## When to propose a change
 
-Khi AI mắc **cùng một lỗi từ lần thứ hai trở đi** (phát hiện qua review của người hoặc AI reviewer), hoặc khi một rule hiện có gây hiểu nhầm, không còn tác dụng. Trong PR review của các project, gắn nhãn `agent-kit-feedback` cho những comment như vậy để gom lại định kỳ.
+When the AI makes **the same mistake a second time** (caught by a human or AI reviewer), or when an existing rule is misleading or no longer useful. In project PR reviews, label such comments `agent-kit-feedback` so they can be collected periodically.
 
-## Đưa vào đâu
+## Where it goes
 
-Chọn theo thứ tự ưu tiên, dừng ở mức đầu tiên phù hợp:
+Pick in this order and stop at the first level that fits:
 
-1. **Lint / TypeScript config** — nếu kiểm tra được bằng máy. Không viết thành rule bằng lời.
-2. **Core rules** (`rules/core/`) — nếu đúng cho mọi project React.
-3. **Skill** (`skills/`) — nếu chỉ liên quan đến một loại task.
-4. **`project.md` của project đó** — nếu chỉ đúng với một project. Không gửi PR vào repo này.
+1. **Lint / TypeScript config**: if a machine can check it. Do not write it as a prose rule.
+2. **Core rules** (`rules/core/`): if it holds for every React project.
+3. **Skill** (`skills/`): if it only concerns one kind of task.
+4. **That project's `project.md`**: if it only holds for one project. Do not open a PR here.
 
-## Cách viết rule
+## How to write a rule
 
-- Cụ thể, kiểm chứng được. "Viết code sạch" là vô dụng; "component quá khoảng 200 dòng thì tách" là dùng được.
-- Chỉ viết điều AI thực sự hay làm sai. Mỗi dòng thừa làm loãng các dòng quan trọng.
-- Gán đúng mức: MUST, SHOULD hoặc ASK FIRST.
-- Gán mã rule tiếp theo trong phần đó (`R<phần>.<số>`). **Không đánh lại số** rule cũ, vì các project đang override theo mã. Rule bị xoá thì bỏ luôn mã đó, không dùng lại.
+- Be specific and verifiable. "Write clean code" is useless; "split a component once it exceeds about 200 lines" is usable.
+- Only write down things the AI actually gets wrong. Every extra line dilutes the important ones.
+- Assign the right level: MUST, SHOULD or ASK FIRST.
+- Use the next rule code in that section (`R<section>.<number>`). **Never renumber** existing rules, because projects override by code. When a rule is deleted, retire its code; do not reuse it.
 
-## Không đưa vào repo này
+## Keep out of this repo
 
-Repo này có thể được nhiều người đọc. Không đưa vào: tên hoặc URL service nội bộ, thông tin hạ tầng, dữ liệu khách hàng, secret, hay chi tiết riêng của một project. Những thứ đó thuộc `project.md` trong repo của từng project.
+Many people may read this repo. Do not include internal service names or URLs, infrastructure details, customer data, secrets, or details specific to one project. Those belong in the `project.md` of each project repo.
 
-## Quy trình
+## Process
 
-1. Tạo branch, sửa, cập nhật `CHANGELOG.md` và `version` trong `package.json` theo semver.
-2. Mở PR, điền đủ template.
-3. Owner (xem `.github/CODEOWNERS`) duyệt trước khi merge.
-4. Định kỳ khoảng 2 tuần, owner rà lại các feedback đã gom và dọn các rule không còn tác dụng.
+1. Create a branch, make the change, update `CHANGELOG.md` and `version` in `package.json` per semver.
+2. Open a PR and fill in the template.
+3. An owner (see `.github/CODEOWNERS`) approves before merge.
+4. About every 2 weeks, the owner reviews collected feedback and prunes rules that no longer help.

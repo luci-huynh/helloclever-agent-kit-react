@@ -1,16 +1,16 @@
 ## 2. React
 
 **MUST**
-- **R2.1** Chỉ dùng function component và hooks.
-- **R2.2** Không dùng `useEffect` để tính giá trị suy ra từ props/state. Tính trực tiếp khi render (dùng `useMemo` nếu tính toán nặng).
-- **R2.3** Không copy props vào state rồi đồng bộ bằng `useEffect`.
-- **R2.4** `useEffect` có subscription, timer, event listener phải có cleanup.
-- **R2.5** `key` trong list dùng id ổn định. Không dùng index nếu list có thể đổi thứ tự hoặc thêm/xoá phần tử.
+- **R2.1** Use only function components and hooks.
+- **R2.2** Do not use `useEffect` to compute values derived from props/state. Compute them during render (use `useMemo` if the computation is expensive).
+- **R2.3** Do not copy props into state and sync them with `useEffect`.
+- **R2.4** A `useEffect` that sets up a subscription, timer or event listener must clean it up.
+- **R2.5** List `key`s use stable ids. Do not use the index if the list can be reordered or have items added/removed.
 
 **SHOULD**
-- **R2.6** Mỗi component một trách nhiệm chính. Quá khoảng 200 dòng, hoặc vừa lấy dữ liệu vừa render phức tạp, thì tách.
-- **R2.7** Logic dùng lại ở từ 2 nơi trở lên thì tách thành custom hook `useXxx`.
-- **R2.8** Chỉ dùng `useMemo`, `useCallback`, `React.memo` khi có lý do cụ thể: tính toán nặng, truyền vào component đã memo, hoặc làm dependency của effect.
-- **R2.9** Truyền props cụ thể; tránh truyền cả object lớn khi component chỉ cần vài field.
-- **R2.10** Giữ state ở cấp thấp nhất có thể. Chỉ đưa lên store global khi nhiều nhánh component cùng cần.
+- **R2.6** One main responsibility per component. Split it when it exceeds about 200 lines, or when it both fetches data and renders something complex.
+- **R2.7** Extract logic used in 2 or more places into a custom hook `useXxx`.
+- **R2.8** Only use `useMemo`, `useCallback` or `React.memo` for a concrete reason: an expensive computation, passing to a memoized component, or serving as an effect dependency.
+- **R2.9** Pass specific props; avoid passing a whole large object when the component needs only a few fields.
+- **R2.10** Keep state at the lowest level possible. Only lift it into a global store when several component branches need it.
 

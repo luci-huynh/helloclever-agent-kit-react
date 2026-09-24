@@ -1,12 +1,12 @@
-## Thay đổi gì
-<!-- Rule / skill / workflow / template nào, mã rule liên quan -->
+## What changed
+<!-- Which rule / skill / workflow / template, and the related rule codes -->
 
-## Vì sao
-<!-- Lỗi thực tế nào dẫn đến thay đổi này? Link PR hoặc comment review nếu có. -->
+## Why
+<!-- What real mistake led to this change? Link the PR or review comment if available. -->
 
 ## Checklist
-- [ ] Không kiểm tra được bằng lint/TypeScript (nếu được, đưa vào lint thay vì rules)
-- [ ] Đúng cho mọi project React (nếu không, đưa vào `project.md` của project đó)
-- [ ] Không đánh lại số các rule cũ
-- [ ] Không chứa thông tin nội bộ nhạy cảm (tên/URL service, dữ liệu khách hàng, secret)
-- [ ] Đã cập nhật `CHANGELOG.md` và `version` trong `package.json`
+- [ ] Cannot be checked by lint/TypeScript (if it can, put it in lint instead of rules)
+- [ ] Applies to every React project (if not, put it in that project's `project.md`)
+- [ ] Existing rules are not renumbered
+- [ ] Contains no sensitive internal information (service names/URLs, customer data, secrets)
+- [ ] Updated `CHANGELOG.md` and `version` in `package.json`

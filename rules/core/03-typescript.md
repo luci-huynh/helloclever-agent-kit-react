@@ -1,13 +1,13 @@
 ## 3. TypeScript
 
-_Chỉ áp dụng cho project dùng TypeScript (`config.json` → `core.typescript`)._
+_Only applies to projects that use TypeScript (`config.json` → `core.typescript`)._
 
 **MUST**
-- **R3.1** Không dùng `any`. Chưa biết kiểu thì dùng `unknown` rồi thu hẹp kiểu.
-- **R3.2** Không dùng `as` hoặc `// @ts-ignore` để lách lỗi type. Nếu buộc phải dùng, ghi comment giải thích lý do.
-- **R3.3** Props của component có type rõ ràng.
-- **R3.4** Dữ liệu từ API có type riêng, đặt theo pattern của project.
+- **R3.1** Do not use `any`. When the type is unknown, use `unknown` and narrow it.
+- **R3.2** Do not use `as` or `// @ts-ignore` to get around type errors. If you truly must, add a comment explaining why.
+- **R3.3** Component props have explicit types.
+- **R3.4** API data has its own types, placed according to the project's pattern.
 
 **SHOULD**
-- **R3.5** Dùng union type cho các trạng thái rời rạc (`'idle' | 'loading' | 'error' | 'success'`) thay vì nhiều biến boolean.
+- **R3.5** Use a union type for discrete states (`'idle' | 'loading' | 'error' | 'success'`) instead of multiple booleans.
 

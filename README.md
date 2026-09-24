@@ -1,53 +1,53 @@
 # @helloclever/agent-kit-react
 
-Bộ rules, skills và workflows giúp AI coding agent (Claude Code, Cursor, Copilot…) làm việc đúng chuẩn trong các project frontend React của Hello Clever.
+Rules, skills and workflows that help AI coding agents (Claude Code, Cursor, Copilot…) work to standard in Hello Clever's React frontend projects.
 
-> Trạng thái: **v0.1 — pilot**. Chưa có CLI; cài thủ công theo hướng dẫn bên dưới.
+> Status: **v0.1 — pilot**. No CLI yet; install manually as described below.
 
-## Thành phần
+## Contents
 
-| Thư mục | Nội dung |
+| Folder | Contents |
 |---|---|
-| `rules/core/` | Core rules dùng chung cho mọi project React, chia theo phần, mỗi rule có mã (`R2.3`). |
-| `skills/` | Hướng dẫn cho từng loại task (tạo component, tích hợp API…). _Đang xây dựng._ |
-| `workflows/` | Slash commands (`/feature`, `/review`) và hooks. _Đang xây dựng._ |
-| `templates/` | Các file sẽ được tạo trong project khi cài. |
-| `cli/` | Lệnh `init` / `sync` / `profile`. _Làm sau._ |
-| `docs/` | ADR và quy trình đóng góp. |
+| `rules/core/` | Core rules shared by every React project, split into sections; every rule has a code (`R2.3`). |
+| `skills/` | Instructions for specific kinds of task (create a component, integrate an API…). _In progress._ |
+| `workflows/` | Slash commands (`/feature`, `/review`) and hooks. _In progress._ |
+| `templates/` | Files created in a project on install. |
+| `cli/` | `init` / `sync` / `profile` commands. _Planned._ |
+| `docs/` | ADRs and the contribution process. |
 
-## Cài vào project (thủ công, giai đoạn pilot)
+## Install into a project (manual, pilot phase)
 
-Chạy tại thư mục gốc của project cần cài:
+Run at the root of the target project:
 
 ```bash
-KIT=/đường/dẫn/tới/agent-kit-react
+KIT=/path/to/agent-kit-react
 mkdir -p .agent-kit
 cat $KIT/rules/core/*.md > .agent-kit/core-rules.md
 cp $KIT/templates/project.md $KIT/templates/config.json .agent-kit/
 cp $KIT/templates/AGENTS.md $KIT/templates/CLAUDE.md .
 ```
 
-Project không dùng TypeScript: bỏ `03-typescript.md` khi ghép file.
+For projects without TypeScript: leave out `03-typescript.md` when concatenating.
 
-Sau đó điền `.agent-kit/project.md` (stack, cấu trúc, file mẫu, lệnh chạy, override) và commit tất cả vào repo project.
+Then fill in `.agent-kit/project.md` (stack, structure, reference files, commands, overrides) and commit everything to the project repo.
 
-## Cấu trúc trong project sau khi cài
+## Layout in a project after install
 
 ```
 project/
-├── AGENTS.md              # file vào cho Cursor, Codex, Copilot…
-├── CLAUDE.md              # file vào cho Claude Code (import các file bên dưới)
+├── AGENTS.md              # entry point for Cursor, Codex, Copilot…
+├── CLAUDE.md              # entry point for Claude Code (imports the files below)
 └── .agent-kit/
-    ├── core-rules.md      # ghép từ rules/core — KHÔNG sửa tay
-    ├── project.md         # riêng project — team tự sửa
-    └── config.json        # version kit, bật/tắt phần core
+    ├── core-rules.md      # assembled from rules/core — DO NOT edit by hand
+    ├── project.md         # project-specific — maintained by the team
+    └── config.json        # kit version, core sections on/off
 ```
 
-## Custom cho từng project
+## Per-project customization
 
-- **Mô tả thực tế** trong `project.md`.
-- **Override rule cụ thể** bằng mã rule, trong mục "Override core rules" của `project.md`.
-- **Tắt cả một phần** (ví dụ TypeScript) trong `config.json`.
-- **Rules theo thư mục**: đặt thêm `AGENTS.md` nhỏ trong thư mục con (ví dụ `src/legacy/`).
+- **Describe reality** in `project.md`.
+- **Override a specific rule** by its code, in the "Override core rules" section of `project.md`.
+- **Turn off a whole section** (for example TypeScript) in `config.json`.
+- **Folder-scoped rules**: add a small `AGENTS.md` in a subfolder (for example `src/legacy/`).
 
-Không bao giờ sửa `core-rules.md` trong project. Muốn đổi core rules, gửi PR vào repo này — xem [docs/contributing.md](docs/contributing.md).
+Never edit `core-rules.md` inside a project. To change core rules, open a PR in this repo — see [docs/contributing.md](docs/contributing.md).

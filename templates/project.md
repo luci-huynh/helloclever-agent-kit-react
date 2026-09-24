@@ -1,37 +1,37 @@
-# Project Profile — <tên project>
+# Project Profile — <project name>
 
-<!-- File riêng của project. Team tự sửa. Chỗ nào chưa chắc, ghi [cần xác nhận]. -->
+<!-- Project-specific file. Maintained by the team. Mark anything uncertain with [needs confirmation]. -->
 
-## Tổng quan
-- Mục đích: <project này làm gì, cho ai>
-- Owner / người liên hệ: <tên hoặc team>
+## Overview
+- Purpose: <what this project does, and for whom>
+- Owner / contact: <name or team>
 
-## Stack thực tế
+## Actual stack
 - React: <version>
-- Ngôn ngữ: <TypeScript / JavaScript>
+- Language: <TypeScript / JavaScript>
 - Build: <Vite / CRA / Next.js / webpack…>
-- Router: <thư viện + version>
+- Router: <library + version>
 - State: <local state / Zustand / Redux / Context…>
-- Data fetching: <React Query / SWR / axios + hook…>
+- Data fetching: <React Query / SWR / axios + hooks…>
 - Styling: <Tailwind / SCSS modules / styled-components…>
-- Form: <React Hook Form / Formik / tự viết…>
-- Test: <Vitest / Jest + Testing Library…>
-- UI library / design system: <tên, hoặc "chưa có">
+- Forms: <React Hook Form / Formik / custom…>
+- Tests: <Vitest / Jest + Testing Library…>
+- UI library / design system: <name, or "none yet">
 
-## Cấu trúc thư mục
-<!-- Mô tả ngắn các thư mục chính và cái gì nằm ở đâu. Nếu có code cũ và code mới theo chuẩn khác nhau, ghi rõ. -->
-- `src/...` — <nội dung>
+## Folder structure
+<!-- Briefly describe the main folders and what lives where. If old and new code follow different conventions, say so. -->
+- `src/...` — <contents>
 
-## File mẫu để bắt chước
-<!-- Quan trọng nhất: AI sẽ mở các file này để học pattern. -->
-- Component: `<đường dẫn>`
-- Custom hook: `<đường dẫn>`
-- Gọi API: `<đường dẫn>`
-- Form: `<đường dẫn>`
-- Test: `<đường dẫn>`
+## Reference files to imitate
+<!-- Most important section: the AI opens these files to learn the patterns. -->
+- Component: `<path>`
+- Custom hook: `<path>`
+- API call: `<path>`
+- Form: `<path>`
+- Test: `<path>`
 
-## Lệnh chạy
-- Cài đặt: `<yarn install>`
+## Commands
+- Install: `<yarn install>`
 - Dev: `<yarn dev>`
 - Lint: `<yarn lint>`
 - Typecheck: `<yarn typecheck>`
@@ -39,11 +39,11 @@
 - Build: `<yarn build>`
 
 ## Override core rules
-<!-- Ghi mã rule + cách project này làm khác + lý do. Không override được phần 6 và 8. -->
-<!-- Ví dụ:
-- R5.1: Chưa có API layer; code cũ gọi axios trực tiếp trong hook `useXxx`. Code mới vẫn theo cách này cho đến khi migrate.
-- R4.1: Chưa có design token; dùng biến SCSS trong `src/styles/_vars.scss`.
+<!-- Rule code + how this project does it differently + why. Sections 6 and 8 cannot be overridden. -->
+<!-- Examples:
+- R5.1: No API layer yet; existing code calls axios directly inside `useXxx` hooks. New code follows the same approach until migration.
+- R4.1: No design tokens yet; use the SCSS variables in `src/styles/_vars.scss`.
 -->
 
-## Lưu ý đặc biệt
-<!-- Những điều AI hay làm sai ở project này, vùng code nhạy cảm, tích hợp bên thứ ba… -->
+## Special notes
+<!-- Things the AI often gets wrong in this project, sensitive code areas, third-party integrations… -->

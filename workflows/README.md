@@ -1,9 +1,9 @@
 # Workflows
 
-- `commands/` — slash commands nhiều bước, có điểm dừng chờ người duyệt. Khi cài, đưa vào `.claude/commands/`.
-- `hooks/` — script chạy tự động (ví dụ lint + typecheck sau khi AI sửa file).
+- `commands/`: multi-step slash commands with checkpoints that wait for human approval. Installed into `.claude/commands/`.
+- `hooks/`: scripts that run automatically (for example lint + typecheck after the AI edits a file).
 
-## Kế hoạch
-- [ ] `/feature` — yêu cầu → plan (chờ duyệt) → code → lint/typecheck/test → tự review → tóm tắt PR
-- [ ] `/review` — AI reviewer độc lập, output theo mức blocking / nên sửa / gợi ý, dẫn chiếu mã rule
-- [ ] Hook lint + typecheck khi sửa file
+## Plan
+- [ ] `/feature`: requirement → plan (wait for approval) → code → lint/typecheck/test → self-review → PR summary
+- [ ] `/review`: independent AI reviewer; output grouped as blocking / should fix / suggestion, citing rule codes
+- [ ] Hook: lint + typecheck on file edit

@@ -1,24 +1,24 @@
-# ADR 0001: Phân lớp rules và cách custom theo project
+# ADR 0001: Rules layering and per-project customization
 
-- Trạng thái: Đã chấp nhận
-- Ngày: 2026-09-24
+- Status: Accepted
+- Date: 2026-09-24
 
-## Bối cảnh
-Các project FE React hiện không thống nhất về cấu trúc thư mục và thư viện. Nếu core rules áp một cấu trúc lý tưởng lên project chưa theo cấu trúc đó, AI sẽ lúng túng giữa rules và code thực tế.
+## Context
+Our React frontend projects are not consistent in folder structure or libraries. If core rules imposed an ideal structure on projects that do not follow it, the AI would be torn between the rules and the actual code.
 
-## Quyết định
-- **Core rules** chỉ chứa nguyên tắc đúng bất kể cấu trúc và thư viện, chia theo phần trong `rules/core/`, mỗi rule có mã `R<phần>.<số>`.
-- **`project.md`** trong mỗi project mô tả thực tế và override convention theo mã rule.
-- Phần 6 (Bảo mật & dữ liệu) và phần 8 (Definition of Done) không bị override.
-- Trong project, file của kit nằm trong `.agent-kit/`; `AGENTS.md` là file vào chung, `CLAUDE.md` import các file qua `@`.
-- `config.json` cho phép tắt cả một phần core (ví dụ TypeScript với project JavaScript).
-- Core rules không bao giờ bị sửa tay trong project.
+## Decision
+- **Core rules** contain only principles that hold regardless of structure and libraries. They are split into sections under `rules/core/`, and every rule has a code `R<section>.<number>`.
+- **`project.md`** in each project describes how the project actually works and overrides conventions by rule code.
+- Section 6 (Security & data) and section 8 (Definition of Done) cannot be overridden.
+- Inside a project, kit files live in `.agent-kit/`. `AGENTS.md` is the shared entry point, and `CLAUDE.md` imports files with `@`.
+- `config.json` can turn off a whole core section (for example TypeScript in a JavaScript project).
+- Core rules are never edited by hand inside a project.
 
-## Các phương án đã cân nhắc
-- Chuẩn hoá toàn bộ project trước rồi mới làm rules: quá chậm, không ai hưởng lợi trong nhiều tháng.
-- Mỗi project tự viết rules riêng: không tái sử dụng được, chất lượng không đồng đều.
+## Options considered
+- Standardize every project first, then write rules: too slow; nobody would benefit for months.
+- Let each project write its own rules: not reusable, and quality would be uneven.
 
-## Hệ quả
-- Kit dùng được ngay trên các project hiện tại mà không cần đổi code.
-- Mục "Override core rules" trong `project.md` cũng là danh sách việc cần chuẩn hoá của project đó.
-- Mã rule phải ổn định: không đánh lại số.
+## Consequences
+- The kit works on existing projects immediately, with no code changes.
+- The "Override core rules" section of `project.md` doubles as that project's standardization backlog.
+- Rule codes must be stable: never renumber.

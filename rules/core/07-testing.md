@@ -1,11 +1,11 @@
 ## 7. Testing
 
 **MUST**
-- **R7.1** Logic mới (hook, util, xử lý dữ liệu) phải có test, nếu project đã có setup test.
-- **R7.2** Khi sửa bug, thêm test tái hiện bug đó nếu khả thi.
+- **R7.1** New logic (hooks, utils, data processing) must have tests, if the project already has a test setup.
+- **R7.2** When fixing a bug, add a test that reproduces it where feasible.
 
 **SHOULD**
-- **R7.3** Test theo hành vi người dùng (render, tương tác, kết quả hiển thị), không test state nội bộ hay implementation detail.
-- **R7.4** Tìm phần tử theo role, label, text trước; `data-testid` là lựa chọn cuối cùng.
-- **R7.5** Mock API theo pattern có sẵn trong project.
+- **R7.3** Test user behavior (render, interact, check what is displayed), not internal state or implementation details.
+- **R7.4** Query elements by role, label or text first; `data-testid` is the last resort.
+- **R7.5** Mock APIs following the project's existing pattern.
 

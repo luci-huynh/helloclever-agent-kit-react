@@ -1,18 +1,18 @@
-## 1. Cách làm việc
+## 1. Workflow
 
 **MUST**
-- **R1.1** Đọc `.agent-kit/project.md` trước khi bắt đầu task.
-- **R1.2** Trước khi tạo file mới, xem 2–3 file cùng loại gần nhất và theo đúng pattern của chúng (cấu trúc, đặt tên, cách import, cách gọi API).
-- **R1.3** Chỉ sửa trong phạm vi task. Thấy vấn đề khác thì ghi vào phần tóm tắt, không tự sửa.
-- **R1.4** Không xoá hoặc viết lại code khi chưa hiểu rõ mục đích của nó.
+- **R1.1** Read `.agent-kit/project.md` before starting a task.
+- **R1.2** Before creating a new file, look at the 2–3 nearest files of the same kind and follow their pattern (structure, naming, imports, how they call APIs).
+- **R1.3** Only change what is in scope for the task. If you notice other problems, list them in your summary instead of fixing them.
+- **R1.4** Do not delete or rewrite code until you understand what it is for.
 
 **SHOULD**
-- **R1.5** Task chạm từ 4 file trở lên: liệt kê plan (file nào tạo/sửa, vì sao) và chờ xác nhận trước khi code.
-- **R1.6** Chia thay đổi lớn thành các bước nhỏ, mỗi bước đều chạy được.
+- **R1.5** For a task that touches 4 or more files, list a plan (which files to create/change and why) and wait for confirmation before coding.
+- **R1.6** Split large changes into small steps that each leave the app working.
 
 **ASK FIRST**
-- **R1.7** Thêm, xoá hoặc nâng version bất kỳ dependency nào.
-- **R1.8** Tạo folder mới ở cấp `src/` hoặc thay đổi cấu trúc thư mục.
-- **R1.9** Sửa component, hook, util dùng chung (được import ở nhiều nơi).
-- **R1.10** Sửa config: build, lint, tsconfig, CI, biến môi trường.
+- **R1.7** Adding, removing or upgrading any dependency.
+- **R1.8** Creating a new top-level folder under `src/` or changing the folder structure.
+- **R1.9** Changing a shared component, hook or util (imported in many places).
+- **R1.10** Changing config: build, lint, tsconfig, CI, environment variables.
 

@@ -1,16 +1,16 @@
-# ADR XXXX: <Tiêu đề quyết định>
+# ADR XXXX: <Decision title>
 
-- Trạng thái: Đề xuất | Đã chấp nhận | Thay thế bởi ADR YYYY
-- Ngày: YYYY-MM-DD
+- Status: Proposed | Accepted | Superseded by ADR YYYY
+- Date: YYYY-MM-DD
 
-## Bối cảnh
-<Vấn đề gì, vì sao cần quyết định>
+## Context
+<What is the problem, and why does it need a decision>
 
-## Quyết định
-<Chọn gì>
+## Decision
+<What was chosen>
 
-## Các phương án đã cân nhắc
-<Phương án khác và lý do không chọn>
+## Options considered
+<Other options and why they were not chosen>
 
-## Hệ quả
-<Điều gì thay đổi, đánh đổi gì>
+## Consequences
+<What changes, and what the trade-offs are>

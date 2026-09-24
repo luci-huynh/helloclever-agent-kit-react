@@ -1,15 +1,15 @@
 ## 8. Definition of Done
 
-_Không bị `project.md` override._
+_Cannot be overridden by `project.md`._
 
-Chỉ báo hoàn thành khi đủ các điều kiện sau:
+Only report a task as done when all of the following hold:
 
-- **R8.1** Lint, typecheck, test, build đều pass (lệnh cụ thể trong `project.md`). Nếu fail thì sửa; không tắt rule, không skip test.
-- **R8.2** Không còn `console.log`, code bị comment-out, hay TODO không được yêu cầu.
-- **R8.3** Đã tự đối chiếu diff với core rules và `project.md`.
-- **R8.4** Gửi tóm tắt gồm:
-  - Đã thay đổi gì và vì sao.
-  - Đã kiểm tra bằng cách nào.
-  - Những gì chưa làm hoặc cần người xác nhận.
-  - Vấn đề phát hiện ngoài phạm vi task (nếu có).
+- **R8.1** Lint, typecheck, tests and build all pass (exact commands in `project.md`). If something fails, fix it; do not disable rules or skip tests.
+- **R8.2** No leftover `console.log`, commented-out code, or TODOs that were not requested.
+- **R8.3** You have checked your diff against the core rules and `project.md`.
+- **R8.4** You send a summary covering:
+  - What changed and why.
+  - How you verified it.
+  - What is not done yet or needs human confirmation.
+  - Problems found outside the task's scope (if any).
 

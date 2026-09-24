@@ -1,17 +1,19 @@
 # Skills
 
-Mỗi skill là một thư mục chứa hướng dẫn cho một loại task cụ thể, chỉ được nạp khi cần.
+Each skill is a folder with instructions for one specific kind of task, loaded only when needed.
 
 ```
-skills/<tên-skill>/
-├── SKILL.md       # frontmatter (name, description) + các bước thực hiện + lỗi thường gặp
-└── examples/      # file mẫu "chuẩn" để AI bắt chước (tuỳ chọn)
+skills/<skill-name>/
+├── SKILL.md       # frontmatter (name, description) + steps + common mistakes
+└── examples/      # "golden" reference files for the AI to imitate (optional)
 ```
 
-Khi cài vào project, skills được đưa vào `.claude/skills/`.
+When installed into a project, skills go into `.claude/skills/`.
 
-## Kế hoạch
-- [ ] `generate-project-profile` — quét repo và viết nháp `.agent-kit/project.md`
+Skills are written in English, even when the request comes in another language.
+
+## Plan
+- [ ] `generate-project-profile`: scan the repo and draft `.agent-kit/project.md`
 - [ ] `create-component`
 - [ ] `api-integration`
 - [ ] `figma-to-component`

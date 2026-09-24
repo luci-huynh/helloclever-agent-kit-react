@@ -1,11 +1,11 @@
-## 6. Bảo mật & dữ liệu
+## 6. Security & data
 
-_Không bị `project.md` override._
+_Cannot be overridden by `project.md`._
 
 **MUST**
-- **R6.1** Không commit secret, token, API key hay dữ liệu thật của khách hàng.
-- **R6.2** Không `console.log` dữ liệu cá nhân, token, thông tin thanh toán.
-- **R6.3** Không dùng `dangerouslySetInnerHTML` với nội dung chưa được sanitize.
-- **R6.4** Không lưu token hoặc dữ liệu nhạy cảm vào `localStorage` trừ khi `project.md` quy định rõ.
-- **R6.5** Dữ liệu mẫu, mock và test chỉ dùng giá trị giả.
+- **R6.1** Never commit secrets, tokens, API keys or real customer data.
+- **R6.2** Never `console.log` personal data, tokens or payment information.
+- **R6.3** Never use `dangerouslySetInnerHTML` with unsanitized content.
+- **R6.4** Do not store tokens or sensitive data in `localStorage` unless `project.md` explicitly allows it.
+- **R6.5** Sample data, mocks and tests use fake values only.
 
