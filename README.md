@@ -12,22 +12,21 @@ Rules, skills and workflows that help AI coding agents (Claude Code, Cursor, Cop
 | `skills/` | Instructions for specific kinds of task (create a component, integrate an API…). _In progress._ |
 | `workflows/` | Slash commands (`/feature`, `/review`) and hooks. _In progress._ |
 | `templates/` | Files created in a project on install. |
-| `cli/` | `init` / `sync` / `profile` commands. _Planned._ |
+| `cli/` | `agent-kit init` (working). `sync` / `profile` _planned._ |
 | `docs/` | ADRs and the contribution process. |
 
-## Install into a project (manual, pilot phase)
+## Install into a project (pilot phase — temporary public-git install, no registry)
 
-Run at the root of the target project:
+Not published to a registry yet, but the repo is currently public, so `yarn add` can install straight from git:
 
 ```bash
-KIT=/path/to/agent-kit-react
-mkdir -p .agent-kit
-cat $KIT/rules/core/*.md > .agent-kit/core-rules.md
-cp $KIT/templates/project.md $KIT/templates/config.json .agent-kit/
-cp $KIT/templates/AGENTS.md $KIT/templates/CLAUDE.md .
+yarn add -D @helloclever/agent-kit-react@https://github.com/luci-huynh/helloclever-agent-kit-react.git
+yarn agent-kit init
+# projects without TypeScript:
+yarn agent-kit init --no-typescript
 ```
 
-For projects without TypeScript: leave out `03-typescript.md` when concatenating.
+This assembles `.agent-kit/core-rules.md`, writes `.agent-kit/config.json`, and copies `templates/project.md`, `templates/AGENTS.md` and `templates/CLAUDE.md` into the project (existing files are left alone; pass `--force` to overwrite). `AGENTS.md` is read by Codex CLI and other AGENTS.md-aware tools; `CLAUDE.md` is read by Claude Code and imports the rest — see [cli/README.md](cli/README.md) for details and version pinning.
 
 Then fill in `.agent-kit/project.md` (stack, structure, reference files, commands, overrides) and commit everything to the project repo.
 

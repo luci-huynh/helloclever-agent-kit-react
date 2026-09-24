@@ -1,9 +1,15 @@
 {
   "name": "@helloclever/agent-kit-react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "AI agent kit (rules, skills, workflows) for Hello Clever's React frontend projects",
   "private": true,
   "license": "UNLICENSED",
+  "bin": {
+    "agent-kit": "./cli/bin/agent-kit.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "files": [
     "rules",
     "skills",
