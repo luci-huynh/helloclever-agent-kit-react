@@ -2,8 +2,6 @@
 
 Rules, skills and workflows that help AI coding agents (Claude Code, Cursor, Copilot…) work to standard in Hello Clever's React frontend projects.
 
-> Status: **v0.1 — pilot**. No CLI yet; install manually as described below.
-
 ## Contents
 
 | Folder | Contents |
@@ -15,18 +13,21 @@ Rules, skills and workflows that help AI coding agents (Claude Code, Cursor, Cop
 | `cli/` | `agent-kit init` (working). `sync` / `profile` _planned._ |
 | `docs/` | ADRs and the contribution process. |
 
-## Install into a project (pilot phase — temporary public-git install, no registry)
+## Requirements
 
-Not published to a registry yet, but the repo is currently public, so `yarn add` can install straight from git:
+- React frontend project written in **TypeScript**. The TypeScript rules (section 3) are always included.
+- Node.js and Yarn.
+
+## Install into a project
 
 ```bash
 yarn add -D @helloclever/agent-kit-react@https://github.com/luci-huynh/helloclever-agent-kit-react.git
 yarn agent-kit init
-# projects without TypeScript:
-yarn agent-kit init --no-typescript
 ```
 
-This assembles `.agent-kit/core-rules.md`, writes `.agent-kit/config.json`, and copies `templates/project.md`, `templates/AGENTS.md` and `templates/CLAUDE.md` into the project (existing files are left alone; pass `--force` to overwrite). `AGENTS.md` is read by Codex CLI and other AGENTS.md-aware tools; `CLAUDE.md` is read by Claude Code and imports the rest — see [cli/README.md](cli/README.md) for details and version pinning.
+To pin a specific kit version, append `#<commit-sha>` to the URL and bump it when you want the project to pick up kit changes.
+
+`init` assembles `.agent-kit/core-rules.md`, writes `.agent-kit/config.json`, and copies `templates/project.md`, `templates/AGENTS.md` and `templates/CLAUDE.md` into the project. Existing files are left alone; pass `--force` to overwrite. `AGENTS.md` is read by Codex, Cursor, Copilot and other AGENTS.md-aware tools; `CLAUDE.md` is read by Claude Code and imports the rest. See [cli/README.md](cli/README.md) for details.
 
 Then fill in `.agent-kit/project.md` (stack, structure, reference files, commands, overrides) and commit everything to the project repo.
 
@@ -46,7 +47,6 @@ project/
 
 - **Describe reality** in `project.md`.
 - **Override a specific rule** by its code, in the "Override core rules" section of `project.md`.
-- **Turn off a whole section** (for example TypeScript) in `config.json`.
 - **Folder-scoped rules**: add a small `AGENTS.md` in a subfolder (for example `src/legacy/`).
 
 Never edit `core-rules.md` inside a project. To change core rules, open a PR in this repo — see [docs/contributing.md](docs/contributing.md).
