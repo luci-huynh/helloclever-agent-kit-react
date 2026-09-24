@@ -1,0 +1,15 @@
+{
+  "name": "@helloclever/agent-kit-react",
+  "version": "0.1.0",
+  "description": "AI agent kit (rules, skills, workflows) cho các project frontend React của Hello Clever",
+  "private": true,
+  "license": "UNLICENSED",
+  "files": [
+    "rules",
+    "skills",
+    "workflows",
+    "templates",
+    "cli"
+  ],
+  "keywords": ["ai", "agents", "rules", "react", "claude-code", "cursor"]
+}
