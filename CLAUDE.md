@@ -12,7 +12,7 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 `@helloclever/agent-kit-react`: rules, skills and workflows that make AI coding agents follow Hello Clever standards in React frontend projects.
 
 - Scope for now: **React frontend only**. Backend comes later; shared parts will then move into a separate `agent-kit-core`.
-- Status: v0.1, pilot. Installed manually (see README). No CLI yet.
+- Status: v0.1.1, demo phase. `agent-kit init` CLI works; installed via `yarn add -D` from public git (see README, decision 3 below).
 
 ## Decisions already made (do not re-litigate)
 
