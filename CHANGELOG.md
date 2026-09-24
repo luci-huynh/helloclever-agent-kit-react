@@ -5,7 +5,7 @@ Follows [Semantic Versioning](https://semver.org/):
 - **minor**: new rules, skills or workflows.
 - **major**: changes that make the AI behave significantly differently, or that change the file layout inside projects.
 
-## [0.2.0] - 2026-09-24
+## [Unreleased]
 ### Added
 - `agent-kit init` CLI command (`cli/bin/agent-kit.js`): assembles `.agent-kit/core-rules.md`, writes `.agent-kit/config.json`, and copies the project templates (`AGENTS.md` for Codex/Cursor/Copilot, `CLAUDE.md` for Claude Code). Installable now via `yarn add -D @helloclever/agent-kit-react@<git url>` while the repo is public — no registry published yet.
 

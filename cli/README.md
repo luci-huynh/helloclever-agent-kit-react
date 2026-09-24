@@ -17,7 +17,7 @@ yarn agent-kit init
 
 Notes:
 - The `@https://...` suffix is required — a bare `yarn add -D @helloclever/agent-kit-react` would try npm's registry and 404, since nothing is published there.
-- Pin a version instead of always tracking `main` by appending `#v0.2.0` (a tag) or `#<commit-sha>` to the URL; bump it on purpose when you want the project to pick up kit changes.
+- Pin a commit instead of always tracking `main` by appending `#<commit-sha>` to the URL (no version tags are cut during the demo phase — see `CHANGELOG.md`'s `[Unreleased]` section); bump it on purpose when you want the project to pick up kit changes.
 - `yarn agent-kit init` runs the bin from `node_modules/.bin`; `npx agent-kit init` works too.
 - Because this is a git install (not a registry tarball), the whole repo is copied into `node_modules`, not just the `files` allowlist in `package.json` — harmless, just slightly more than what a real publish would ship.
 

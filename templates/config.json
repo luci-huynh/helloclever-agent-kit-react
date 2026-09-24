@@ -1,5 +1,5 @@
 {
-  "agentKitVersion": "0.2.0",
+  "agentKitVersion": "0.1.1",
   "stack": "react",
   "core": {
     "typescript": true
