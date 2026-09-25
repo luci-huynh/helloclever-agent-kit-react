@@ -6,12 +6,24 @@
   3. Writes `.agent-kit/config.json` and `.agent-kit/project.md` from `templates/`, with **Actual stack** and **Commands** in `project.md` prefilled from the scan.
   4. Copies `templates/AGENTS.md` and `templates/CLAUDE.md` to the project root.
   5. Installs every `skills/<name>/` that has a `SKILL.md` into `.claude/skills/<name>/`.
+  6. Turns off AI attribution (core rule R6.6), see below.
 
-  `core-rules.md`, `facts.json` and `.claude/skills/<name>/` are kit-owned and rewritten on every run. `config.json`, `project.md`, `AGENTS.md` and `CLAUDE.md` are left untouched if they exist, unless `--force` is passed.
+  `core-rules.md`, `facts.json`, `hooks/commit-msg.js` and `.claude/skills/<name>/` are kit-owned and rewritten on every run. `config.json`, `project.md`, `AGENTS.md` and `CLAUDE.md` are left untouched if they exist, unless `--force` is passed.
 - `agent-kit scan`: reruns the scan and rewrites `.agent-kit/facts.json` only. The `generate-project-profile` skill runs this first.
 - `agent-kit sync` (planned): update core rules, skills and workflows when upgrading. Never touches `project.md`.
 
 Neither command invokes AI. There is no `postinstall` script, and none is planned to invoke AI. Refreshing `project.md` from new facts is done by the `generate-project-profile` skill, which proposes changes instead of overwriting hand-written content.
+
+## Blocking AI attribution (R6.6)
+
+Core rule R6.6 (cannot be overridden) forbids crediting an AI tool in anything pushed or posted. A prose rule is not enough, because tools add attribution on their own, so `init` also enforces it:
+
+- **Claude Code settings.** Merges `"attribution": {"commit": "", "pr": ""}` and the deprecated `"includeCoAuthoredBy": false` (for older versions) into the committed `.claude/settings.json`, keeping every other key. This turns off Claude Code's `Co-Authored-By` trailer and "Generated with Claude Code" PR footer for the whole team.
+- **`commit-msg` git hook.** Copies `workflows/hooks/commit-msg.js` to `.agent-kit/hooks/commit-msg.js` and adds one line calling it to the project's `commit-msg` hook, placed before any existing commands so an `exit` cannot skip it. The check rejects AI `Co-Authored-By`/`Generated-by` trailers, "generated with/by <AI tool>" footers, Claude/Anthropic/ChatGPT links, the 🤖 footer emoji, and an AI tool as commit author. It matches attribution patterns only, so a commit about `CLAUDE.md` or about a feature that integrates an AI API still passes. It catches any tool, not just Claude Code.
+  - Hook location: `.husky/commit-msg` if the project has `.husky/` (committed, shared with the team); otherwise the directory in `core.hooksPath`; otherwise `.git/hooks/commit-msg`, which is local to each clone, so every developer must run `agent-kit init` once.
+  - Running `init` again updates the line in place; it never adds a second one.
+
+Limits: a developer can override the setting in `.claude/settings.local.json` or skip the hook with `--no-verify` (itself forbidden by R10.14), and neither covers PR descriptions written by other tools. For hard enforcement, set `attribution` in Claude Code managed settings (organization policy, cannot be overridden) and add a CI check on commit messages and PR descriptions.
 
 ## What the scan collects
 

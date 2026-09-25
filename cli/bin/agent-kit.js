@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { scanProject } = require('../lib/scan');
 const { renderProjectProfile } = require('../lib/profile');
+const { installCommitMsgHook } = require('../lib/git-hook');
 
 const KIT_ROOT = path.join(__dirname, '..', '..');
 const CWD = process.cwd();
@@ -98,6 +99,29 @@ function installSkills() {
   }
 }
 
+// R6.6: turn off Claude Code's own commit trailer and PR footer for everyone on the project.
+// Merged into the committed .claude/settings.json so the team's other settings are kept.
+// `includeCoAuthoredBy` is the deprecated key, still set for older Claude Code versions.
+function applyClaudeSettings() {
+  const file = path.join(CWD, '.claude', 'settings.json');
+  const rel = path.relative(CWD, file);
+  let settings = {};
+  if (fs.existsSync(file)) {
+    try {
+      settings = JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch {
+      console.log(`  skip ${rel}: not valid JSON. Set "attribution": {"commit": "", "pr": ""} by hand.`);
+      return;
+    }
+  }
+  const existed = fs.existsSync(file);
+  settings.attribution = { ...settings.attribution, commit: '', pr: '' };
+  settings.includeCoAuthoredBy = false;
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(settings, null, 2) + '\n');
+  console.log(`  ${existed ? 'updated' : 'wrote'} ${rel} (AI attribution off)`);
+}
+
 function cmdScan(argv) {
   parseArgs(argv, []);
   console.log('Scanning project...');
@@ -139,17 +163,22 @@ function cmdInit(argv) {
   console.log('Installing skills...');
   installSkills();
 
+  console.log('Turning off AI attribution (R6.6)...');
+  applyClaudeSettings();
+  installCommitMsgHook(KIT_ROOT, CWD, console.log);
+
   console.log('\nNext steps:');
   console.log('  1. Finish .agent-kit/project.md. Actual stack and Commands are prefilled from the scan.');
   console.log('     Claude Code: run /generate-project-profile');
   console.log('     Other tools: ask the agent to follow .claude/skills/generate-project-profile/SKILL.md');
   console.log('  2. Review every [needs confirmation] item with the team.');
-  console.log('  3. Commit .agent-kit/, .claude/skills/, AGENTS.md and CLAUDE.md to this project repo.');
+  console.log('  3. Commit .agent-kit/, .claude/, AGENTS.md and CLAUDE.md to this project repo');
+  console.log('     (plus .husky/commit-msg if the project uses husky).');
 }
 
 function printUsage() {
   console.log('agent-kit — usage:');
-  console.log('  agent-kit init [--force]   Scan the project, install rules, templates and skills');
+  console.log('  agent-kit init [--force]   Scan the project, install rules, templates, skills and the commit-msg check');
   console.log('  agent-kit scan             Rescan the project and rewrite .agent-kit/facts.json only');
   console.log('');
   console.log('`sync` is planned — see cli/README.md.');

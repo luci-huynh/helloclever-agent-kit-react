@@ -1,5 +1,7 @@
 ## 10. Git & Pull Requests
 
+_No AI attribution in commits, PRs or anything else you push: see **R6.6** (cannot be overridden)._
+
 **MUST**
 - **R10.1** Branch names: `<type>/<ticket-id>-<short-description>`, with `<type>` one of `feat/`, `fix/`, `hotfix/`, `chore/`. A sprint branch is named `s<sprint-no>/<sprint-name>`.
 - **R10.2** Commit messages follow Conventional Commits: `<type>(<scope>): <description>`. Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`.
