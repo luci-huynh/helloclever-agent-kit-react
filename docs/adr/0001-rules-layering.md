@@ -11,7 +11,7 @@ Our React frontend projects are not consistent in folder structure or libraries.
 - **`project.md`** in each project describes how the project actually works and overrides conventions by rule code.
 - Section 6 (Security & data) and section 8 (Definition of Done) cannot be overridden.
 - Inside a project, kit files live in `.agent-kit/`. `AGENTS.md` is the shared entry point, and `CLAUDE.md` imports files with `@`.
-- `config.json` can turn off a whole core section (for example TypeScript in a JavaScript project).
+- `config.json` can turn off a whole core section (for example TypeScript in a JavaScript project). _Superseded by [ADR 0002](0002-typescript-required.md): TypeScript is required, so this toggle was removed._
 - Core rules are never edited by hand inside a project.
 
 ## Options considered

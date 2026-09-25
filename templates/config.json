@@ -1,7 +1,4 @@
 {
   "agentKitVersion": "0.1.1",
-  "stack": "react",
-  "core": {
-    "typescript": true
-  }
+  "stack": "react"
 }

@@ -1,10 +1,30 @@
 # CLI
 
-- `agent-kit init [--no-typescript] [--force]`: assembles `.agent-kit/core-rules.md` from `rules/core/`, writes `.agent-kit/config.json`, and copies `templates/project.md`, `templates/AGENTS.md` and `templates/CLAUDE.md` into the target project. Existing files are left untouched unless `--force` is passed. Does not invoke AI — `project.md` is still filled in by hand until the `generate-project-profile` skill exists.
-- `agent-kit sync` (planned): update core rules, skills and workflows when upgrading. Never touches `project.md`.
-- `agent-kit profile --refresh` (planned): rescan the project and propose a diff for `project.md`.
+- `agent-kit init [--force]`:
+  1. Scans the project (see below) and writes `.agent-kit/facts.json`. Stops with an error if the project has no TypeScript (no `typescript` dependency and no `tsconfig.json`).
+  2. Assembles `.agent-kit/core-rules.md` from all of `rules/core/`.
+  3. Writes `.agent-kit/config.json` and `.agent-kit/project.md` from `templates/`, with **Actual stack** and **Commands** in `project.md` prefilled from the scan.
+  4. Copies `templates/AGENTS.md` and `templates/CLAUDE.md` to the project root.
+  5. Installs every `skills/<name>/` that has a `SKILL.md` into `.claude/skills/<name>/`.
 
-There is no `postinstall` script, and none is planned to invoke AI.
+  `core-rules.md`, `facts.json` and `.claude/skills/<name>/` are kit-owned and rewritten on every run. `config.json`, `project.md`, `AGENTS.md` and `CLAUDE.md` are left untouched if they exist, unless `--force` is passed.
+- `agent-kit scan`: reruns the scan and rewrites `.agent-kit/facts.json` only. The `generate-project-profile` skill runs this first.
+- `agent-kit sync` (planned): update core rules, skills and workflows when upgrading. Never touches `project.md`.
+
+Neither command invokes AI. There is no `postinstall` script, and none is planned to invoke AI. Refreshing `project.md` from new facts is done by the `generate-project-profile` skill, which proposes changes instead of overwriting hand-written content.
+
+## What the scan collects
+
+`cli/lib/scan.js` reads only local files, with no network access and no AI. Output is deterministic (sorted, no timestamps), so rescans produce clean diffs.
+
+- `package.json`: name, description, scripts, and known libraries by category (build, router, state, data fetching, styling, forms, validation, testing, UI library, i18n, lint/format). Versions come from `node_modules` when installed, otherwise from the declared range.
+- Package manager (from `packageManager` or the lockfile) and the run command for dev / lint / typecheck / test / build.
+- `tsconfig.json`: TypeScript version, `strict`, `extends`, path aliases.
+- Known config files at the root (Vite, Next, ESLint, Prettier, Tailwind, Jest/Vitest, Playwright, `.env.example`, CI workflows…). `.env` files other than examples are never read.
+- Source tree: file counts per extension, the first two folder levels under `src/` with file counts, and up to 5 candidate reference files per category (component, hook, API, form, test), ranked by recent git activity.
+- `notes`: anything worth a human look, such as a missing typecheck script or a monorepo root.
+
+The scan reports what is **declared**; the skill checks what is actually **used**.
 
 ## Install (temporary: public git, no registry)
 

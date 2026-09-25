@@ -19,12 +19,13 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 1. **Three-layer rules** (see [ADR 0001](docs/adr/0001-rules-layering.md)):
    - Core rules in `rules/core/`, one file per section, every rule coded `R<section>.<number>`. Principles only; independent of folder structure and libraries.
    - `project.md` in each project describes reality and overrides by rule code.
-   - `config.json` turns whole sections on/off.
+   - `config.json` records the kit version. (It originally toggled whole sections; the only toggle, TypeScript, was removed by decision 6.)
    - Section 6 (Security & data) and section 8 (Definition of Done) **cannot be overridden**.
 2. **In-project layout**: kit files live in `.agent-kit/`. `AGENTS.md` is the shared entry point for every tool; `CLAUDE.md` imports files with `@`.
 3. **Distribution (later)**: private npm package with a CLI: `init` / `sync` / `profile`. **`postinstall` never invokes AI.** `init` is implemented (`cli/bin/agent-kit.js`), ahead of the roadmap order below. Temporary stopgap while no registry is chosen: the GitHub repo is public, so projects install with `yarn add -D @helloclever/agent-kit-react@<git url>` (see [cli/README.md](cli/README.md)) — `package.json` stays `"private": true` since this is not a real registry publish.
-4. **`generate-project-profile` is hybrid**: a script scans deterministic facts first (package.json, lockfile, config files, folder tree, scripts), then the AI writes the profile from those facts.
+4. **`generate-project-profile` is hybrid**: a script scans deterministic facts first (package.json, lockfile, config files, folder tree, scripts), then the AI writes the profile from those facts. Implemented: `cli/lib/scan.js` → `.agent-kit/facts.json` (run by `agent-kit init` and `agent-kit scan`; no timestamps, sorted, so rescans diff cleanly), `init` prefills Actual stack + Commands in `project.md`, and `skills/generate-project-profile/SKILL.md` (installed to `.claude/skills/`) does the rest. The skill only edits `project.md` and proposes a diff instead of overwriting hand-written content.
 5. **Four-layer review**: automated gates (lint/typecheck/test/build) → AI self-review → independent AI reviewer → human review. Plus a feedback loop from review back into rules (label `agent-kit-feedback`, see [contributing](docs/contributing.md)).
+6. **TypeScript is required** (see [ADR 0002](docs/adr/0002-typescript-required.md)). `agent-kit init` refuses projects with no `typescript` dependency and no `tsconfig.json`; section 3 is always included; there is no `--no-typescript` option. Skills and rules may assume TypeScript.
 
 ## Conventions for this repo
 
@@ -39,11 +40,11 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 ## Roadmap (in order)
 
 1. Install into a pilot project and use it for real tasks for 1–2 sprints; record where the AI still gets things wrong.
-2. Skill `generate-project-profile` (hybrid: fact-scanning script + AI-written profile, marks uncertain items `[needs confirmation]`).
+2. Skill `generate-project-profile` (hybrid: fact-scanning script + AI-written profile, marks uncertain items `[needs confirmation]`). First version done (see decision 4); tune it from pilot results.
 3. Skill `create-component`.
 4. Workflows `/feature`, `/review`, and a lint hook.
 5. ESLint baseline, so machine-checkable rules can be removed from prose.
-6. CLI and private registry. `agent-kit init` already exists (see decision 3 above); `sync`, `profile`, and choosing/publishing to a real registry are still open.
+6. CLI and private registry. `agent-kit init` and `agent-kit scan` already exist (see decisions 3 and 4 above); `sync` and choosing/publishing to a real registry are still open.
 
 ## Open questions
 

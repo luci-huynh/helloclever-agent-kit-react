@@ -1,6 +1,6 @@
 ## 3. TypeScript
 
-_Only applies to projects that use TypeScript (`config.json` → `core.typescript`)._
+_Every project using this kit is TypeScript (see ADR 0002)._
 
 **MUST**
 - **R3.1** Do not use `any`. When the type is unknown, use `unknown` and narrow it.

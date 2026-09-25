@@ -13,7 +13,7 @@ When installed into a project, skills go into `.claude/skills/`.
 Skills are written in English, even when the request comes in another language.
 
 ## Plan
-- [ ] `generate-project-profile`: scan the repo and draft `.agent-kit/project.md`
+- [x] `generate-project-profile`: verify the scanned facts and draft `.agent-kit/project.md`
 - [ ] `create-component`
 - [ ] `api-integration`
 - [ ] `figma-to-component`
