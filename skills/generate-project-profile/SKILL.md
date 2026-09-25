@@ -27,7 +27,7 @@ If the command is unavailable, collect the same facts by hand from `package.json
 
 ### 2. Read what exists
 
-- `.agent-kit/facts.json`: `stack`, `commands`, `typescript`, `configFiles`, `tree`, `fileCounts`, `candidates`, `notes`.
+- `.agent-kit/facts.json`: `stack`, `commands`, `typescript`, `configFiles`, `tree`, `fileCounts`, `candidates`, `notes`, and `profileTemplateGaps` (sections and lines of the current template that `project.md` lacks; add them, and drop lines they replace, such as `Language` → `TypeScript`).
 - The current `.agent-kit/project.md`. `agent-kit init` has already prefilled **Actual stack** and **Commands** from the scan.
 - `README.md` and `CODEOWNERS`, if present.
 

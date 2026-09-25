@@ -90,4 +90,36 @@ function renderProjectProfile(template, facts) {
     .join('\n');
 }
 
-module.exports = { renderProjectProfile };
+// Section heading → list of `- Label:` items, ignoring HTML comments.
+function outline(markdown) {
+  const sections = new Map();
+  let current = null;
+  for (const line of markdown.replace(/<!--[\s\S]*?-->/g, '').split('\n')) {
+    const heading = line.match(/^## (.+)$/);
+    if (heading) {
+      current = heading[1].trim();
+      sections.set(current, []);
+    } else if (current) {
+      const item = line.match(/^- ([^:`<]+):/);
+      if (item) sections.get(current).push(item[1].trim());
+    }
+  }
+  return sections;
+}
+
+// Sections and lines of the current template that an existing project.md lacks, e.g. after a kit upgrade.
+// Lines the team added themselves are never reported.
+function profileGaps(template, projectMd) {
+  const have = outline(projectMd);
+  const gaps = [];
+  for (const [section, labels] of outline(template)) {
+    if (!have.has(section)) gaps.push(`missing section "${section}"`);
+    else {
+      const missing = labels.filter((label) => !have.get(section).includes(label));
+      if (missing.length) gaps.push(`${section}: missing ${missing.join(', ')}`);
+    }
+  }
+  return gaps;
+}
+
+module.exports = { renderProjectProfile, profileGaps };

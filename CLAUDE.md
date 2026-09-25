@@ -12,7 +12,7 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 `@helloclever/agent-kit-react`: rules, skills and workflows that make AI coding agents follow Hello Clever standards in React frontend projects.
 
 - Scope for now: **React frontend only**. Backend comes later; shared parts will then move into a separate `agent-kit-core`.
-- Status: v0.1.1, demo phase. `agent-kit init` CLI works; installed via `yarn add -D` from public git (see README, decision 3 below).
+- Status: v0.1.x, pilot. CLI (`init`, `sync`, `scan`) works; installed via `yarn add -D` from public git, pinned to a release tag (see README, decision 3 below).
 
 ## Decisions already made (do not re-litigate)
 
@@ -22,7 +22,7 @@ This file gives AI agents the context for developing **this kit repo**. It is no
    - `config.json` records the kit version. (It originally toggled whole sections; the only toggle, TypeScript, was removed by decision 6.)
    - Section 6 (Security & data) and section 8 (Definition of Done) **cannot be overridden**.
 2. **In-project layout**: kit files live in `.agent-kit/`. `AGENTS.md` is the shared entry point for every tool; `CLAUDE.md` imports files with `@`.
-3. **Distribution (later)**: private npm package with a CLI: `init` / `sync` / `profile`. **`postinstall` never invokes AI.** `init` is implemented (`cli/bin/agent-kit.js`), ahead of the roadmap order below. Temporary stopgap while no registry is chosen: the GitHub repo is public, so projects install with `yarn add -D @helloclever/agent-kit-react@<git url>` (see [cli/README.md](cli/README.md)) — `package.json` stays `"private": true` since this is not a real registry publish.
+3. **Distribution (later)**: private npm package with a CLI: `init` / `sync` / `profile`. **`postinstall` never invokes AI.** `init`, `sync` and `scan` are implemented (`cli/bin/agent-kit.js`, shared steps in `cli/lib/install.js`), ahead of the roadmap order below. The kit package has no `postinstall` of its own; `init` adds `"postinstall": "agent-kit sync || exit 0"` to the *project's* `package.json`, and `sync` only copies kit-owned files, writes only on change, and never fails the install. `yarn install` alone never upgrades the kit (the lockfile pins the commit); upgrading is a deliberate `yarn add …#v<version>` in the project. Temporary stopgap while no registry is chosen: the GitHub repo is public, so projects install with `yarn add -D @helloclever/agent-kit-react@<git url>` (see [cli/README.md](cli/README.md)) — `package.json` stays `"private": true` since this is not a real registry publish.
 4. **`generate-project-profile` is hybrid**: a script scans deterministic facts first (package.json, lockfile, config files, folder tree, scripts), then the AI writes the profile from those facts. Implemented: `cli/lib/scan.js` → `.agent-kit/facts.json` (run by `agent-kit init` and `agent-kit scan`; no timestamps, sorted, so rescans diff cleanly), `init` prefills Actual stack + Commands in `project.md`, and `skills/generate-project-profile/SKILL.md` (installed to `.claude/skills/`) does the rest. The skill only edits `project.md` and proposes a diff instead of overwriting hand-written content.
 5. **Four-layer review**: automated gates (lint/typecheck/test/build) → AI self-review → independent AI reviewer → human review. Plus a feedback loop from review back into rules (label `agent-kit-feedback`, see [contributing](docs/contributing.md)).
 6. **TypeScript is required** (see [ADR 0002](docs/adr/0002-typescript-required.md)). `agent-kit init` refuses projects with no `typescript` dependency and no `tsconfig.json`; section 3 is always included; there is no `--no-typescript` option. Skills and rules may assume TypeScript.
@@ -34,9 +34,15 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 - Only write rules for mistakes the AI actually makes. If lint/TypeScript can check it, it goes into lint, not prose.
 - Rule levels: MUST / SHOULD / ASK FIRST.
 - No internal service names/URLs, infrastructure details, customer data or secrets.
-- Every change: update `CHANGELOG.md` and bump `version` in `package.json` per semver (see CHANGELOG header).
 - Skills follow `skills/<name>/SKILL.md` (frontmatter `name`, `description`) + optional `examples/`. Installed into `.claude/skills/`.
 - Workflows: `workflows/commands/` → `.claude/commands/`; `workflows/hooks/` for automatic scripts.
+
+## Versioning and commits (this repo)
+
+- **Before every commit in this repo, ask the user whether to bump `version`**, and wait for the answer. Suggest a level (patch / minor / major, per the CHANGELOG header) based on what the commit changes, but let the user decide. Ask even for small commits.
+- **Yes:** bump `version` in `package.json` (the only place it lives), move the `[Unreleased]` entries in `CHANGELOG.md` under `## [x.y.z] - YYYY-MM-DD`, and commit. Then offer to create the `vx.y.z` tag on that commit; creating and pushing the tag needs the user's explicit go-ahead. Projects install by tag, so a bumped version without a tag is not installable.
+- **No:** add the change under `[Unreleased]` in `CHANGELOG.md` and commit without touching `version`.
+- The version in `package.json` must always match the latest tag or be ahead of it; never tag a commit whose `package.json` version differs from the tag.
 
 ## Roadmap (in order)
 
@@ -45,7 +51,7 @@ This file gives AI agents the context for developing **this kit repo**. It is no
 3. Skill `create-component`.
 4. Workflows `/feature`, `/review`, and a lint hook.
 5. ESLint baseline, so machine-checkable rules can be removed from prose.
-6. CLI and private registry. `agent-kit init` and `agent-kit scan` already exist (see decisions 3 and 4 above); `sync` and choosing/publishing to a real registry are still open.
+6. CLI and private registry. `agent-kit init`, `sync` and `scan` already exist (see decisions 3 and 4 above); choosing/publishing to a real registry is still open.
 
 ## Open questions
 

@@ -7,12 +7,13 @@
   4. Copies `templates/AGENTS.md` and `templates/CLAUDE.md` to the project root.
   5. Installs every `skills/<name>/` that has a `SKILL.md` into `.claude/skills/<name>/`.
   6. Turns off AI attribution (core rule R6.6), see below.
+  7. Adds `agent-kit sync || exit 0` to the project's `postinstall` script (appended with `&&` if a postinstall already exists).
 
-  `core-rules.md`, `facts.json`, `hooks/commit-msg.js` and `.claude/skills/<name>/` are kit-owned and rewritten on every run. `config.json`, `project.md`, `AGENTS.md` and `CLAUDE.md` are left untouched if they exist, unless `--force` is passed.
-- `agent-kit scan`: reruns the scan and rewrites `.agent-kit/facts.json` only. The `generate-project-profile` skill runs this first.
-- `agent-kit sync` (planned): update core rules, skills and workflows when upgrading. Never touches `project.md`.
+  `project.md`, `AGENTS.md` and `CLAUDE.md` are left untouched if they exist, unless `--force` is passed.
+- `agent-kit sync`: brings the kit-owned files in line with the installed kit version, writing a file only when its content changes: `.agent-kit/core-rules.md`, `.claude/skills/<name>/` (only skills the kit ships), `.claude/settings.json` (attribution keys only), `.agent-kit/hooks/commit-msg.js` and the hook line, and `agentKitVersion` in `.agent-kit/config.json` (keys removed by newer kit versions are dropped). It also reports lines of the current `project.md` template that the project's `project.md` lacks. It never touches `project.md`, `AGENTS.md` or `CLAUDE.md`, does not rescan, prints one line when nothing changed, and exits 0 even on error so it cannot break an install. It skips projects that were never initialized.
+- `agent-kit scan`: reruns the scan and rewrites `.agent-kit/facts.json` only, including `profileTemplateGaps` (the same template check as `sync`). The `generate-project-profile` skill runs this first.
 
-Neither command invokes AI. There is no `postinstall` script, and none is planned to invoke AI. Refreshing `project.md` from new facts is done by the `generate-project-profile` skill, which proposes changes instead of overwriting hand-written content.
+No command invokes AI. The kit package itself has no `postinstall`. The project's `postinstall` runs `agent-kit sync`, which only copies kit files. Refreshing `project.md` from new facts is done by the `generate-project-profile` skill, which proposes changes instead of overwriting hand-written content.
 
 ## Blocking AI attribution (R6.6)
 
@@ -20,8 +21,9 @@ Core rule R6.6 (cannot be overridden) forbids crediting an AI tool in anything p
 
 - **Claude Code settings.** Merges `"attribution": {"commit": "", "pr": ""}` and the deprecated `"includeCoAuthoredBy": false` (for older versions) into the committed `.claude/settings.json`, keeping every other key. This turns off Claude Code's `Co-Authored-By` trailer and "Generated with Claude Code" PR footer for the whole team.
 - **`commit-msg` git hook.** Copies `workflows/hooks/commit-msg.js` to `.agent-kit/hooks/commit-msg.js` and adds one line calling it to the project's `commit-msg` hook, placed before any existing commands so an `exit` cannot skip it. The check rejects AI `Co-Authored-By`/`Generated-by` trailers, "generated with/by <AI tool>" footers, Claude/Anthropic/ChatGPT links, the 🤖 footer emoji, and an AI tool as commit author. It matches attribution patterns only, so a commit about `CLAUDE.md` or about a feature that integrates an AI API still passes. It catches any tool, not just Claude Code.
-  - Hook location: `.husky/commit-msg` if the project has `.husky/` (committed, shared with the team); otherwise the directory in `core.hooksPath`; otherwise `.git/hooks/commit-msg`, which is local to each clone, so every developer must run `agent-kit init` once.
-  - Running `init` again updates the line in place; it never adds a second one.
+  - Hook location: `.husky/commit-msg` if the project has `.husky/` (committed, shared with the team), plus `.git/hooks/commit-msg` while husky is not active on the clone (husky activates itself in `prepare`, after postinstall); otherwise the directory in `core.hooksPath`; otherwise `.git/hooks/commit-msg`, which is local to each clone and installed for every developer by the postinstall `sync`.
+  - The hook line ends with `|| exit 1`, so the rejection holds even when the hook script continues to other commands and ends with `exit 0`.
+  - Running `init` or `sync` again updates the line in place; it never adds a second one.
 
 Limits: a developer can override the setting in `.claude/settings.local.json` or skip the hook with `--no-verify` (itself forbidden by R10.14), and neither covers PR descriptions written by other tools. For hard enforcement, set `attribution` in Claude Code managed settings (organization policy, cannot be overridden) and add a CI check on commit messages and PR descriptions.
 
@@ -43,13 +45,14 @@ The scan reports what is **declared**; the skill checks what is actually **used*
 Not published to any npm registry yet — `package.json` still has `"private": true`, and which registry to use is an open question (see root `CLAUDE.md`). The GitHub repo itself is currently **public**, so in the meantime any project can install straight from it:
 
 ```bash
-yarn add -D @helloclever/agent-kit-react@https://github.com/luci-huynh/helloclever-agent-kit-react.git
+yarn add -D @helloclever/agent-kit-react@https://github.com/luci-huynh/helloclever-agent-kit-react.git#vX.Y.Z
 yarn agent-kit init
 ```
 
 Notes:
 - The `@https://...` suffix is required — a bare `yarn add -D @helloclever/agent-kit-react` would try npm's registry and 404, since nothing is published there.
-- Pin a commit instead of always tracking `main` by appending `#<commit-sha>` to the URL (no version tags are cut during the demo phase — see `CHANGELOG.md`'s `[Unreleased]` section); bump it on purpose when you want the project to pick up kit changes.
+- `#vX.Y.Z` pins a release tag (see `CHANGELOG.md`). Every release bumps `version` and gets a matching `v<version>` tag. Upgrading a project means moving the tag with `yarn add` (see "Keep the kit up to date" in the root README).
+- Why `yarn install` alone never upgrades the kit: the lockfile records the exact commit, so installs are reproducible. Only `yarn add` / `yarn upgrade` re-resolve it.
 - `yarn agent-kit init` runs the bin from `node_modules/.bin`; `npx agent-kit init` works too.
 - Because this is a git install (not a registry tarball), the whole repo is copied into `node_modules`, not just the `files` allowlist in `package.json` — harmless, just slightly more than what a real publish would ship.
 
